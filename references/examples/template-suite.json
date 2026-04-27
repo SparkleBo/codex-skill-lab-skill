@@ -1,0 +1,16 @@
+{
+  "skill": "path/to/your-skill",
+  "cases": [
+    {
+      "name": "基础交付物检查",
+      "prompt": "针对一个真实用户请求，产出这个 skill 应该创建的主要交付物。",
+      "assert_contains": [
+        "替换为期望标题"
+      ],
+      "assert_not_contains": [
+        "SKILL_NOT_FOUND"
+      ],
+      "min_reply_chars": 200
+    }
+  ]
+}

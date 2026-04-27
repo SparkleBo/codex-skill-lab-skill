@@ -1,0 +1,7 @@
+interface:
+  display_name: "Skill Lab（技能实验室）"
+  short_description: "安装、测试、判定并迭代本地 Codex skills"
+  default_prompt: "使用 $skill-lab 把这个 skill 安装到 Codex，运行 suite，再用 judge agent 审核效果，并基于判定结果迭代改进。"
+
+policy:
+  allow_implicit_invocation: true

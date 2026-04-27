@@ -4,6 +4,17 @@ Codex Skill Lab 是一个用于本地 Codex skill 评估、语义判定和迭代
 
 它的核心目标是避免只用字符串断言评判复杂 skill。脚本负责运行可重复测试并保存证据，judge agent 负责基于证据做语义审核，优化步骤只在真实弱点明确后执行。
 
+## Inspiration
+
+这个工作流明确参考了 Andrej Karpathy 的 [karpathy/autoresearch](https://github.com/karpathy/autoresearch) 项目。
+
+`autoresearch` 的核心思想是：让 agent 在真实实验环境中自主修改、运行、度量、比较结果；如果结果变好就保留，否则丢弃并继续下一轮。Skill Lab 把这个模式迁移到 Codex skill 评估上：
+
+- `suite` 对应可重复实验运行，负责收集证据。
+- `judge` 对应实验结果评审，负责判断质量是否真的变好。
+- `optimize` 对应下一轮实验提案，只基于失败或低质量证据做最小修改。
+- `keep/discard` 原则用于避免为了单个机械断言牺牲整体质量。
+
 ## 核心原理
 
 复杂 skill 的质量问题通常不只是“有没有包含某个字符串”。更重要的是：

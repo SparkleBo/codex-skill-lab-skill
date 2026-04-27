@@ -9,6 +9,7 @@
 - `judge` 负责基于证据做语义判定
 - suite 指标和 judge 结论都改进才 `keep`
 - 没改进就 `discard` 并回滚到当前最佳版本
+- 单次任务必须有明确目标、评估标准和退出条件
 - 遇到明显瞬态故障时自动重试一次
 
 这个工具让你在当前仓库里直接做一条完整闭环：
@@ -212,7 +213,18 @@ rtk python3 "$SKILL_LAB_HOME/scripts/codex_skill_tester.py" optimize \
 
 默认仍建议先看 `skill.diff` 再决定是否应用。
 
-## 7. 自动闭环
+## 7. 持续改进与自动闭环
+
+Skill 可以长期持续改进，但不要让单次 agent 任务无限循环。
+
+合理的持续改进方式是：每次围绕一个明确问题或覆盖缺口，运行一轮 `suite -> judge`，根据证据决定是否进入下一轮。每轮结束后都应该能回答：
+
+- 这一轮为什么要改？
+- 用什么标准判断变好？
+- 什么条件下停止？
+- 这一轮有没有引入新风险？
+
+`autoloop` 是有限轮次工具，不是无限改进机制。它必须通过 `--max-rounds` 控制轮数，默认适合窄回归和烟测。
 
 如果你想直接让工具执行多轮：
 
@@ -235,7 +247,7 @@ rtk python3 "$SKILL_LAB_HOME/scripts/codex_skill_tester.py" autoloop \
 6. 如果结果没有更好，就 `discard` 并回滚到当前最佳 `SKILL.md`
 7. 直到通过，或者耗尽 `--max-rounds`
 
-注意：`autoloop` 当前主要看 suite 断言指标，适合窄回归和烟测。复杂 skill 的发布级审核，应优先使用手动的 `suite -> judge -> optimize -> suite -> judge` 闭环。
+注意：`autoloop` 当前主要看 suite 断言指标，适合窄回归和烟测。复杂 skill 的发布级审核，应优先使用手动的 `suite -> judge -> optimize -> suite -> judge` 闭环，并在每轮结束后决定是否继续。
 
 运行结束后会在 `.codex-tests/runs/...-autoloop-*` 下写出：
 

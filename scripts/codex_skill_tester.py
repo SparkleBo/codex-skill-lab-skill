@@ -1712,6 +1712,8 @@ def autoloop_command(args: argparse.Namespace) -> int:
     suite_payload = load_json_file(suite_path)
     if not isinstance(suite_payload, dict):
         raise TesterError("Suite file must contain a JSON object.")
+    if args.max_rounds < 1:
+        raise TesterError("Autoloop requires --max-rounds to be at least 1.")
     loop_skill_value = args.skill or suite_payload.get("skill")
     if not isinstance(loop_skill_value, str) or not loop_skill_value.strip():
         raise TesterError("Autoloop requires a skill. Provide --skill or a top-level `skill` key in the suite.")

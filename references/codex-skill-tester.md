@@ -1,8 +1,6 @@
 # Codex Skill Tester（Codex Skill 测试器）
 
-这套流程明确参考 Andrej Karpathy 的 [`karpathy/autoresearch`](https://github.com/karpathy/autoresearch) 项目：让 agent 做可重复实验，运行后检查结果是否改进，改进就保留，不改进就丢弃并继续迭代。
-
-Skill Lab 将这个思路迁移到 Codex skill 审核：`suite` 收集实验证据，`judge` 做语义判定，`optimize` 只在证据显示真实弱点时提出修改。复杂 skill 的最终判断交给独立 judge agent：
+这套流程使用实验式迭代方法：`suite` 收集实验证据，`judge` 做语义判定，`optimize` 只在证据显示真实弱点时提出修改。复杂 skill 的最终判断交给独立 judge agent：
 
 - 第一轮永远先跑 baseline
 - 后续每轮只围绕一个目标 skill 做修改
